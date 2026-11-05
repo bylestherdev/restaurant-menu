@@ -16,7 +16,7 @@ const MOCK_WEATHER: WeatherData = {
 let weatherCache: WeatherData | null = null;
 let weatherListeners: Array<(weather: WeatherData) => void> = [];
 
-export async function fetchWeather(location = 'Madrid'): Promise<WeatherData> {
+export async function fetchWeather(location = 'Santiago'): Promise<WeatherData> {
   try {
     // TODO: Replace with real API call
     // const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&units=metric&lang=es`);
@@ -71,6 +71,7 @@ if (typeof window !== 'undefined') {
 // ============================================
 // UTILIDADES DE CLIMA
 // ============================================
+
 export function getWeatherDescription(weather: WeatherData): string {
   const descriptions: Record<WeatherData['condition'], string> = {
     sunny: 'Soleado',
@@ -107,4 +108,25 @@ export function getThermalSensation(weather: WeatherData): string {
     return `Sensación: ${Math.round(feelsLike)}°C`;
   }
   return `Sensación: ${temperature}°C`;
+}
+
+// NUEVA FUNCTION: Sugerencias de platos basadas en el clima
+export function getWeatherBasedSuggestions(weather: WeatherData): string[] {
+  const { temperature, condition } = weather;
+  const tags: string[] = [];
+
+  if (temperature < 12) {
+    tags.push('🍲 Platos de cuchara', '🔥 Carnes guisadas', '☕ Bebidas calientes');
+  } else if (temperature < 18) {
+    tags.push('🍝 Pastas caseras', '🍖 Platos principales', '🍷 Vino tinto');
+  } else if (temperature < 25) {
+    tags.push('🥗 Ensaladas frescas', '🐟 Pescados', '🍝 Risottos');
+  } else {
+    tags.push('🥗 Ensaladas', '🥣 Gazpacho', '🍹 Cócteles', '🍦 Helados', '💧 Agua fría');
+  }
+
+  if (condition === 'rainy') tags.unshift('☔ Comida reconfortante');
+  if (condition === 'sunny') tags.unshift('☀️ Para terraza');
+
+  return tags.slice(0, 4);
 }

@@ -3,6 +3,7 @@
 import { useRecommendations } from '@/context/RecommendationsContext';
 import { getWeatherDescription, getWeatherIcon, getThermalSensation } from '@/lib/weatherService';
 import { WeatherData } from '@/types/recommendations';
+import { FeaturedDishCarousel } from '@/components/FeaturedDishCarousel';
 
 export function WeatherBanner() {
   const { weather, refreshWeather, isLoading } = useRecommendations();
@@ -53,6 +54,9 @@ export function WeatherBanner() {
             <SmartRecommendationTags weather={weather} />
           </div>
         </div>
+
+        {/* Featured Dish Carousel - Mobile: 1 item, Desktop: 3 items */}
+        <FeaturedDishCarousel showCount={5} desktopVisible={3} />
       </div>
     </div>
   );
