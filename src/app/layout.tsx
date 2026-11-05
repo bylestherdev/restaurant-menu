@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { PWAInstallPrompt } from "@/hooks/usePWA";
+import { Navbar } from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-startup-image" href="/icon-512.svg" />
       </head>
       <body className="min-h-full flex flex-col bg-amber-50">
+        <Navbar />
         {children}
         <PWAInstallPrompt />
       </body>
