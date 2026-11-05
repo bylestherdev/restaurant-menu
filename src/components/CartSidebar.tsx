@@ -2,6 +2,7 @@
 
 import { useCart } from '@/context/CartContext';
 import { useState } from 'react';
+import { formatCurrency } from '@/lib/utils';
 
 export function CartSidebar() {
   const { state, removeItem, updateQuantity, updateNotes, setTableNumber, setCustomerName, setOrderNotes, clearCart, getSubtotal, getTax, getServiceCharge, getTotal, config } = useCart();
@@ -114,7 +115,7 @@ export function CartSidebar() {
                                 </button>
                               </div>
                               <span className="font-bold text-amber-600">
-                {(item.price * item.quantity).toFixed(2)} €
+                {formatCurrency(item.price * item.quantity)}
               </span>
                             </div>
                           </div>
@@ -172,23 +173,23 @@ export function CartSidebar() {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between text-amber-700">
                     <span>Subtotal ({itemCount} art.)</span>
-                    <span>{getSubtotal().toFixed(2)} €</span>
+                    <span>{formatCurrency(getSubtotal())}</span>
                   </div>
                   {config.taxRate > 0 && (
                     <div className="flex justify-between text-amber-700">
                       <span>IVA ({Math.round(config.taxRate * 100)}%)</span>
-                      <span>{getTax().toFixed(2)} €</span>
+                      <span>{formatCurrency(getTax())}</span>
                     </div>
                   )}
                   {config.serviceCharge && config.serviceCharge > 0 && (
                     <div className="flex justify-between text-amber-700">
                       <span>Servicio ({Math.round(config.serviceCharge * 100)}%)</span>
-                      <span>{getServiceCharge().toFixed(2)} €</span>
+                      <span>{formatCurrency(getServiceCharge())}</span>
                     </div>
                   )}
                   <div className="border-t border-amber-200 pt-2 flex justify-between text-lg font-bold text-amber-900">
                     <span>Total</span>
-                    <span>{getTotal().toFixed(2)} €</span>
+                    <span>{formatCurrency(getTotal())}</span>
                   </div>
                 </div>
 

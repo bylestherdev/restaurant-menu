@@ -3,6 +3,7 @@
 import { MenuItem } from '@/types/menu';
 import { useCart } from '@/context/CartContext';
 import { useState } from 'react';
+import { formatCurrency } from '@/lib/utils';
 
 interface MenuItemCardProps {
   item: MenuItem;
@@ -75,7 +76,7 @@ export function MenuItemCard({ item, compact = false }: MenuItemCardProps) {
               <p className="text-amber-700/80 text-sm mt-1 line-clamp-2">{item.description}</p>
             </div>
             <span className="font-bold text-amber-600 text-lg whitespace-nowrap">
-              {item.price.toFixed(2)} €
+              {formatCurrency(item.price)}
             </span>
           </div>
           <div className="flex flex-wrap gap-1.5 mb-3">
@@ -165,7 +166,7 @@ export function MenuItemCard({ item, compact = false }: MenuItemCardProps) {
         )}
 
         <div className="flex items-center justify-between pt-3 border-t border-amber-100">
-          <span className="font-bold text-amber-600 text-xl">{item.price.toFixed(2)} €</span>
+          <span className="font-bold text-amber-600 text-xl">{formatCurrency(item.price)}</span>
           <button
             onClick={() => setShowOptions(true)}
             className="bg-amber-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-amber-700 transition-colors flex items-center gap-2"

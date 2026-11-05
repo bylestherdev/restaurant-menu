@@ -6,6 +6,7 @@ import { useCart } from '@/context/CartContext';
 import { MenuItem, getItemById } from '@/data/menu';
 import { SmartRecommendation } from '@/types/recommendations';
 import { useState, useEffect } from 'react';
+import { formatCurrency } from '@/lib/utils';
 
 interface SmartRecommendationsPanelProps {
   isOpen: boolean;
@@ -190,7 +191,7 @@ function SmartRecommendationCard({
                 <h4 className="font-semibold text-amber-900 truncate">{item.name}</h4>
                 <p className="text-amber-600/80 text-xs mt-0.5 line-clamp-1">{item.description}</p>
               </div>
-              <span className="font-bold text-amber-600 whitespace-nowrap">{item.price.toFixed(2)} €</span>
+              <span className="font-bold text-amber-600 whitespace-nowrap">{formatCurrency(item.price)}</span>
             </div>
 
             {/* Reason tags */}
@@ -273,7 +274,7 @@ function PairingsList({
               <p className="text-amber-600/80 text-sm">{pairing.reason}</p>
             </div>
             <div className="text-right">
-              <p className="font-bold text-amber-600">{pairing.foodItem.price.toFixed(2)} €</p>
+              <p className="font-bold text-amber-600">{formatCurrency(pairing.foodItem.price)}</p>
               <span className="text-xs text-amber-500">Plato</span>
             </div>
           </div>
@@ -293,7 +294,7 @@ function PairingsList({
               <p className="text-amber-600/80 text-sm">Compatibilidad: {pairing.score}%</p>
             </div>
             <div className="text-right">
-              <p className="font-bold text-amber-600">{pairing.drinkItem.price.toFixed(2)} €</p>
+              <p className="font-bold text-amber-600">{formatCurrency(pairing.drinkItem.price)}</p>
               <span className="text-xs text-amber-500">Bebida</span>
             </div>
           </div>
@@ -453,7 +454,7 @@ function ProfilePreferencesPanel({ profile }: { profile: ReturnType<typeof usePr
             className="w-24 px-3 py-2 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-amber-900"
             placeholder="Máx"
           />
-          <span className="text-amber-500 text-sm">€</span>
+          <span className="text-amber-500 text-sm">CLP</span>
         </div>
       </div>
 
@@ -476,7 +477,7 @@ function ProfilePreferencesPanel({ profile }: { profile: ReturnType<typeof usePr
             <p className="text-xs text-amber-600">Favoritos</p>
           </div>
           <div>
-            <p className="text-2xl font-bold text-amber-600">{profile.averageSpend.toFixed(0)}€</p>
+            <p className="text-2xl font-bold text-amber-600">{formatCurrency(profile.averageSpend)}</p>
             <p className="text-xs text-amber-600">Media gasto</p>
           </div>
         </div>

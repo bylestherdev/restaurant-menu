@@ -555,11 +555,11 @@ function ItemModal({ item, categories, defaultCategoryId, onClose, onSave }: { i
               <textarea value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} rows={3} className="w-full px-4 py-2.5 border border-amber-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-amber-800 mb-1">Precio (€) *</label>
+              <label className="block text-sm font-medium text-amber-800 mb-1">Precio (CLP) *</label>
               <input type="number" step="0.01" min="0" value={formData.price} onChange={e => setFormData({...formData, price: parseFloat(e.target.value)})} required className="w-full px-4 py-2.5 border border-amber-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-amber-800 mb-1">Coste (€)</label>
+              <label className="block text-sm font-medium text-amber-800 mb-1">Coste (CLP)</label>
               <input type="number" step="0.01" min="0" value={formData.cost} onChange={e => setFormData({...formData, cost: parseFloat(e.target.value)})} className="w-full px-4 py-2.5 border border-amber-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent" />
             </div>
             <div>

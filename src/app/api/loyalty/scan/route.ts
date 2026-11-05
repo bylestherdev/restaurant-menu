@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       });
     }
     
-    // Calculate points (use provided amount or default 25€)
+    // Calculate points (use provided amount or default 25 CLP)
     const euros = amountEuros || 25;
     const result = await addPointsToUser(verification.userId, euros, staffId);
     
