@@ -2,27 +2,63 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { useRouter } from 'next/navigation';
 
 export default function WaiterLayoutClient({ children }: { children: React.ReactNode }) {
   const { user, isAuthenticated, isLoading, logout, hasRole } = useAuth();
+  const pathname = usePathname();
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
+  const [didInit, setDidInit] = useState(false);
 
+  // Efecto de inicialización UNA SOLA VEZ (sin router en deps)
   useEffect(() => {
-    if (!isLoading) {
-      if (!isAuthenticated) {
-        router.push('/waiter/login');
-      } else if (!hasRole(['waiter', 'manager', 'owner'])) {
-        router.push('/admin');
-      } else {
+    if (!didInit) {
+      setDidInit(true);
+      // Delay corto para estabilizar el contexto auth
+      const timeoutId = setTimeout(() => {
+        // Verificar estado después de init
+        if (isAuthenticated && !isLoading && hasRole(['waiter', 'manager', 'owner'])) {
+          setIsReady(true);
+        } else if (!isAuthenticated) {
+          // Navegar al login solo si no ya estamos ahí
+          if (pathname !== '/waiter/login') {
+            router.push('/waiter/login');
+          }
+        }
+      }, 150);
+      return () => clearTimeout(timeoutId);
+    }
+  }, []); // ¡Solo se ejecuta UNA VEZ!
+
+  // Efecto secundario después de init - SIN router en deps
+  useEffect(() => {
+    if (didInit) {
+      // No hace falta observar routeChange, el didInit ya manejó el navigation
+      // Solo aseguramos que el estado sea consistente
+      if (!isReady && isAuthenticated && !isLoading && hasRole(['waiter', 'manager', 'owner'])) {
         setIsReady(true);
       }
     }
-  }, [isAuthenticated, isLoading, hasRole, router]);
+  }, [didInit, isAuthenticated, isLoading]);
 
-  if (isLoading || !isReady) {
+  if (isLoading && !didInit) {
+    // Mostrar spinner DURANTE la inicialización
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-amber-50">
+        <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!isReady && didInit) {
+    // Si ya pasó el init y aún no está listo, redirigir
+    if (!isAuthenticated) {
+      router.push('/waiter/login');
+    }
+    // Mostrar spinner temporal mientras se verifica
     return (
       <div className="min-h-screen flex items-center justify-center bg-amber-50">
         <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
@@ -66,7 +102,7 @@ export default function WaiterLayoutClient({ children }: { children: React.React
         </div>
       </nav>
     </div>
-  );
+  )
 }
 
 function WaiterNavLink({ href, icon, label, badge }: { href: string; icon: string; label: string; badge?: number }) {

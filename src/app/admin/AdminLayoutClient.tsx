@@ -22,14 +22,51 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
   const pathname = usePathname();
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [didInit, setDidInit] = useState(false);
+
+  // Efecto de inicialización UNA SOLA VEZ (sin router en deps)
+  useEffect(() => {
+    if (!didInit) {
+      setDidInit(true);
+      // Delay corto para estabilizar el contexto auth
+      const timeoutId = setTimeout(() => {
+        // Verificar estado después de init
+        if (isAuthenticated && !isLoading && hasPermission('analytics:read')) {
+          // Usuario autenticado con permisos - ya no mostrar spinner
+        } else if (!isAuthenticated) {
+          // Usuario no autenticado, navegar al login
+          if (pathname !== '/admin/login') {
+            router.push('/admin/login');
+          }
+        }
+      }, 150);
+      return () => clearTimeout(timeoutId);
+    }
+  }, []); // ¡Solo se ejecuta UNA VEZ!
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    // Efecto secundario después de init
+    if (didInit) {
+      if (isAuthenticated && !isLoading && hasPermission('analytics:read')) {
+        // Estado consistente - ya no nötig hacer nada extra
+      }
+    }
+  }, [didInit, isAuthenticated, isLoading]);
+
+  if (isLoading && !didInit) {
+    // Mostrar spinner DURANTE la inicialización
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-amber-50">
+        <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!didInit && didInit) {
+    // Verificación rápida después de init
+    if (!isAuthenticated) {
       router.push('/admin/login');
     }
-  }, [isAuthenticated, isLoading, router]);
-
-  if (isLoading || !isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-amber-50">
         <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
@@ -132,7 +169,6 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
             </div>
 
             <div className="flex items-center gap-4">
-              {/* Quick Actions */}
               <Link
                 href="/admin/orders/new"
                 className="hidden sm:flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 transition-colors"
