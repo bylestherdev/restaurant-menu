@@ -53,21 +53,21 @@ export function PWAInstallPrompt() {
         banner.id = 'pwa-install-banner';
         banner.className = 'fixed bottom-24 left-4 right-4 md:left-auto md:right-4 md:w-80 z-50 animate-slide-up';
         banner.innerHTML = `
-          <div class="bg-white rounded-xl border border-amber-200 shadow-xl p-4">
-            <div className="flex items-center gap-3 mb-3">
+          <div class="bg-amber-950 rounded-xl border border-amber-200 shadow-xl p-4">
+            <div class="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center">
                 <span className="text-white text-xl">📱</span>
               </div>
               <div>
-                <p className="font-semibold text-amber-900">Instalar App</p>
-                <p className="text-sm text-amber-600">Acceso rápido desde tu pantalla de inicio</p>
+                <p className="font-semibold text-amber-100">Instalar App</p>
+                <p className="text-sm text-amber-200">Acceso rápido desde tu pantalla de inicio</p>
               </div>
             </div>
             <div className="flex gap-2">
-              <button id="pwa-install-btn" className="flex-1 px-4 py-2 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700">
+              <button id="pwa-install-btn" className="flex-1 px-4 py-2 bg-amber-500 text-amber-950 rounded-lg font-medium hover:bg-amber-600">
                 Instalar
               </button>
-              <button id="pwa-dismiss-btn" className="px-4 py-2 border border-amber-200 text-amber-700 rounded-lg font-medium hover:bg-amber-50">
+              <button id="pwa-dismiss-btn" className="px-4 py-2 border border-amber-300 text-amber-300 rounded-lg font-medium hover:bg-amber-50">
                 Luego
               </button>
             </div>
