@@ -5,14 +5,43 @@ import { loyaltyProgram, getTierById } from '@/data/loyalty';
 // GOOGLE WALLET SERVICE (Mock + Ready for Production)
 // ============================================
 
+/**
+ * Google Loyalty Pass service.
+ * Generates signed QR codes for staff scanning,
+ * creates/updates Google Wallet loyalty passes,
+ * and handles points redemption integration.
+ *
+ * Currently mock-backed but production-ready with
+ * service account migration path (RS256 JWT signing).
+ */
+import { LoyaltyQRPayload } from '@/types/loyalty';
+
+/** ISSUER ID for Google Wallet API. Matches format: 3388000000000000000 */
 const ISSUER_ID = process.env.GOOGLE_WALLET_ISSUER_ID || '3388000000000000000';
-const CLASS_ID = `${ISSUER_ID}.loyalty_class_la_casa`;
+
+/** Auto-generated Loyalty Class ID based on issuer */
+const CLASS_ID = `${ISSUER_ID}.loyalty_class_la_casa}`;
+
+/** Service account email for Google Wallet API */
 const SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_WALLET_SERVICE_EMAIL || 'wallet@restaurant.iam.gserviceaccount.com';
 
-// Mock storage for development (replace with Google Wallet API calls in production)
+/**
+ * Mock storage for development passes.
+ * In production, replace with actual Google Wallet API calls.
+ * Uses a Map keyed by userId for pass tracking.
+ */
 const walletPasses = new Map<string, any>();
 
-// Generate signed QR payload for loyalty card
+/**
+ * Generates a signed QR payload string for loyalty card access.
+ * The signature uses HMAC-SHA256 with the program's qrSecret.
+ * QR codes expire after 5 minutes for security.
+ *
+ * @param userId - The user's unique identifier
+ * @param secret - Optional override of the program's QR secret (uses program secret if not provided)
+ * @returns Signed string in format: "userId.timestamp.signature"
+ *          Expires 5 minutes after generation
+ */
 export function generateSignedQR(userId: string, secret?: string): string {
   const qrSecret = secret || loyaltyProgram.qrSecret;
   const timestamp = Date.now();

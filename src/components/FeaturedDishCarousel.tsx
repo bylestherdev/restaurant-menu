@@ -41,20 +41,13 @@ export function FeaturedDishCarousel({ showCount = 5, desktopVisible = 3 }: Feat
     return () => window.removeEventListener('resize', checkDesktop);
   }, []);
 
-  // Auto-rotate carousel
-  useEffect(() => {
-    if (dishes.length <= 1) return;
-    
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % dishes.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [dishes.length]);
+  // QUIZÁS: ya no hay auto-rotation. Navegación por flechas.
+  // Ya no usamos interval auto.
 
   // Items to show based on desktop/mobile
-  const visibleCount = isDesktop ? desktopVisible : 1;
-  
+  // Mobile: 2 platos, Desktop: desktopVisible (default 3)
+  const visibleCount = isDesktop ? desktopVisible : 2;
+
   // Build the list of dishes to display (with wrap-around for infinite loop)
   const visibleDishes = [];
   
@@ -69,7 +62,7 @@ export function FeaturedDishCarousel({ showCount = 5, desktopVisible = 3 }: Feat
         <div className={`flex transition-transform duration-300 ${
           isDesktop ? 'grid' : 'flex'
         } gap-3 ${
-          isDesktop ? 'grid-cols-3' : 'items-center'
+          isDesktop ? 'grid-cols-3' : 'items-center justify-center'
         } px-2 pb-2 ${
           isDesktop ? 'overflow-x-auto' : 'flex-none'
         }`}
@@ -98,30 +91,28 @@ export function FeaturedDishCarousel({ showCount = 5, desktopVisible = 3 }: Feat
             );
           })}
 
-          {/* Set indicator dots for mobile */}
-          {isDesktop && dishes.length > visibleCount && (
-            <div className="flex items-center justify-between mt-3 text-amber-400 text-xs">
-              <button
-                onClick={() => setCurrentIndex(prev => Math.max(prev - 1, 0))}
-                aria-label="Plato anterior"
-                className="hover:text-amber-300 transition-colors">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <span className="hidden md:block">
-                {currentIndex + 1} de {Math.ceil(dishes.length / visibleCount)}
-              </span>
-              <button
-                onClick={() => setCurrentIndex(prev => Math.min(prev + 1, Math.ceil(dishes.length / visibleCount) - Math.ceil(visibleCount / visibleCount)))}
-                aria-label="Plato siguiente"
-                className="hover:text-amber-300 transition-colors">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          )}
+          {/* Flexible nav area - always show arrows for usability */}
+          <div className="mt-2 flex items-center justify-between w-full">
+            {/* Left arrow - visible on mobile and desktop */}
+            <button
+              onClick={() => setCurrentIndex(prev => Math.max(prev - 1, 0))}
+              aria-label="Plato anterior"
+              className="flex items-center justify-center px-2 py-1 rounded-md text-amber-300 hover:text-amber-200 transition-colors bg-amber-950/20 backdrop-blur select-none">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            {/* Right arrow - visible on mobile and desktop */}
+            <button
+              onClick={() => setCurrentIndex(prev => Math.min(prev + 1, Math.max(0, dishes.length - visibleCount)))}
+              aria-label="Plato siguiente"
+              className="flex items-center justify-center px-2 py-1 rounded-md text-amber-300 hover:text-amber-200 transition-colors bg-amber-950/20 backdrop-blur select-none">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>

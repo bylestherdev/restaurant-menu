@@ -4,12 +4,21 @@ import { generateSignedQR, createOrUpdateLoyaltyPass, updateLoyaltyPassPoints } 
 
 const LOYALTY_KEY = 'user-loyalty';
 
+/**
+ * Persisted loyalty state in localStorage with cross-tab sync.
+ * Stores user progress, tier, points, and wallet integration.
+ * Emits 'loyalty-updated' CustomEvent on changes for real-time sync.
+ */
 export interface StoredUserLoyalty extends UserLoyalty {
   name: string;
   email: string;
   walletObjectId: string;
 }
 
+/**
+ * Reads all stored loyalty data from localStorage.
+ * Returns empty object if not in browser environment or on parse error.
+ */
 function getAllLoyalty(): Record<string, StoredUserLoyalty> {
   if (typeof window === 'undefined') return {};
   try {
@@ -19,17 +28,31 @@ function getAllLoyalty(): Record<string, StoredUserLoyalty> {
   }
 }
 
+/**
+ * Saves all loyalty data to localStorage and dispatches sync event.
+ * No-op if not in browser environment.
+ */
 function saveAllLoyalty(data: Record<string, StoredUserLoyalty>) {
   if (typeof window === 'undefined') return;
   localStorage.setItem(LOYALTY_KEY, JSON.stringify(data));
   window.dispatchEvent(new CustomEvent('loyalty-updated', { detail: data }));
 }
 
+/**
+ * Gets the stored loyalty record for a specific user.
+ * @returns The user's loyalty state, or null if not found
+ */
 export function getUserLoyalty(userId: string): StoredUserLoyalty | null {
   const all = getAllLoyalty();
   return all[userId] || null;
 }
 
+/**
+ * Initializes a new loyalty record for a user.
+ * If user already exists, returns existing record.
+ * Sets default tier to the first (lowest) tier in the program.
+ * Seeds default zero-point state with empty rewards claim history.
+ */
 export function initUserLoyalty(userId: string, name: string, email: string): StoredUserLoyalty {
   const all = getAllLoyalty();
   
