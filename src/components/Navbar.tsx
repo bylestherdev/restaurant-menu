@@ -39,7 +39,7 @@ export function Navbar({ isAuthenticated: propIsAuthenticated, userRole: propUse
 
   return (
     <header className="fixed top-0 left-0 w-full md:top-4 md:left-1/2 md:-translate-x-1/2 md:max-w-[1100px] isolate z-[100] px-0 md:px-4">
-      <div className="w-full px-5 sm:px-6 bg-[rgba(28,25,23,0.85)] backdrop-blur-[14px] border-0 md:border md-border-[var(--border)] rounded-none md:rounded-[2rem] h-16 md:h-16 flex items-center justify-between shadow-xl">
+      <div className="w-full px-5 sm:px-6 bg-[rgba(28,20,17,0.85)] backdrop-blur-[14px] border-0 md:border md-border-[var(--border)] rounded-none md:rounded-[2rem] h-16 md:h-16 flex items-center justify-between shadow-xl">
         <Link
           href="/"
           onClick={() => {
@@ -69,13 +69,13 @@ export function Navbar({ isAuthenticated: propIsAuthenticated, userRole: propUse
 
         <button
           type="button"
-          onClick={() => setOpen((p) => !p)}
+          onClick={() => setMobileOpen((p) => !p)}
           className="md:hidden text-amber-500 hover:text-amber-600 p-2"
           aria-label="Abrir menú"
-          aria-expanded={open}
+          aria-expanded={mobileOpen}
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
-            {open ? (
+            {mobileOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             ) : (
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
