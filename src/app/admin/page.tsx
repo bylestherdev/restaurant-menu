@@ -40,7 +40,7 @@ export default function AdminDashboard() {
   const freeTables = tables.filter(t => t.status === 'free').length;
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+    return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(value);
   };
 
   if (isLoading) {

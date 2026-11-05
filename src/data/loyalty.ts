@@ -5,7 +5,7 @@ export const loyaltyProgram: LoyaltyProgram = {
   name: 'La Casa del Sabor - Club',
   pointsPerEuro: 10,
   qrSecret: process.env.LOYALTY_QR_SECRET || 'dev-secret-change-in-production-min-32-chars-long!!',
-  currency: 'EUR',
+  currency: 'CLP',
   tiers: [
     {
       id: 'bronze',
@@ -16,7 +16,7 @@ export const loyaltyProgram: LoyaltyProgram = {
       icon: '🥉',
       multiplier: 1.0,
       benefits: [
-        '10 pts por cada € gastado',
+        '10 pts por cada CLP $100 gastado',
         'Acceso a catálogo de recompensas',
         'Cumpleaños: postre gratis',
       ],
@@ -30,7 +30,7 @@ export const loyaltyProgram: LoyaltyProgram = {
       icon: '🥈',
       multiplier: 1.25,
       benefits: [
-        '12.5 pts por cada € gastado',
+        '12.5 pts por cada CLP $100 gastado',
         'Café gratis en cada visita',
         'Prioridad en reservas',
         'Descuento 5% en carta',
@@ -45,7 +45,7 @@ export const loyaltyProgram: LoyaltyProgram = {
       icon: '🥇',
       multiplier: 1.5,
       benefits: [
-        '15 pts por cada € gastado',
+        '15 pts por cada CLP $100 gastado',
         'Entrante gratis en cada visita',
         'Reserva preferente 24h',
         'Descuento 10% en carta',
@@ -61,7 +61,7 @@ export const loyaltyProgram: LoyaltyProgram = {
       icon: '💎',
       multiplier: 2.0,
       benefits: [
-        '20 pts por cada € gastado',
+        '20 pts por cada CLP $100 gastado',
         'Plato principal gratis / semana',
         'Mesa VIP garantizada',
         'Descuento 15% en carta',
@@ -103,7 +103,7 @@ export const loyaltyProgram: LoyaltyProgram = {
     {
       id: 'reward-main',
       name: 'Plato Principal Gratis',
-      description: 'Cualquier principal (máx 25€)',
+      description: 'Cualquier principal (máx CLP $2.500)',
       costPoints: 3000,
       type: 'free_item',
       value: 2500,

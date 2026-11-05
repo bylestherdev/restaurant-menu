@@ -9,7 +9,7 @@ const MOCK_WEATHER: WeatherData = {
   condition: 'sunny',
   humidity: 45,
   windSpeed: 12,
-  location: 'Madrid, España',
+  location: 'Santiago, Chile',
   timestamp: Date.now(),
 };
 

@@ -96,7 +96,7 @@ function WaiterTableCard({ table, orders, onStatusChange }: { table: Table; orde
   const itemCount = activeOrder?.items.length || 0;
   const total = activeOrder?.total || 0;
 
-  const formatCurrency = (value: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+  const formatCurrency = (value: number) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(value);
 
   const statusConfig: Record<Table['status'], { bg: string; text: string; label: string; next: Table['status'] }> = {
     free: { bg: 'bg-green-100', text: 'text-green-700', label: 'Libre', next: 'occupied' },
@@ -164,7 +164,7 @@ function WaiterTableRow({ table, orders, onStatusChange }: { table: Table; order
   const tableOrders = orders.filter(o => o.tableId === table.id);
   const activeOrder = tableOrders.find(o => ['pending', 'confirmed', 'preparing', 'ready', 'served'].includes(o.status));
   
-  const formatCurrency = (value: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+  const formatCurrency = (value: number) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(value);
 
   const statusConfig: Record<Table['status'], { bg: string; text: string; label: string }> = {
     free: { bg: 'bg-green-100', text: 'text-green-700', label: '✅ Libre' },
